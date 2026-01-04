@@ -26,12 +26,14 @@ const PortionResult = ({ details, onBack, onReset }: PortionResultProps) => {
   const [unit, setUnit] = useState<Unit>("g");
   
   // Calculate recommended portion (simplified formula)
+  // Weight is in lbs, convert to kg for calculations (1 lb = 0.453592 kg)
   const calculatePortion = () => {
     let baseCal: number;
+    const weightInKg = weight * 0.453592;
     
     if (petType === "cat") {
       // Cats: ~30 kcal per kg for adult maintenance
-      baseCal = weight * 30;
+      baseCal = weightInKg * 30;
       
       // Adjust for age
       if (age < 1) baseCal *= 1.5; // Kittens need more
@@ -39,7 +41,7 @@ const PortionResult = ({ details, onBack, onReset }: PortionResultProps) => {
       
     } else {
       // Dogs: RER formula (70 * weight^0.75) for maintenance
-      baseCal = 70 * Math.pow(weight, 0.75);
+      baseCal = 70 * Math.pow(weightInKg, 0.75);
       
       // Activity factor (assuming moderate activity)
       baseCal *= 1.6;
@@ -113,7 +115,7 @@ const PortionResult = ({ details, onBack, onReset }: PortionResultProps) => {
           Your {petName}'s daily portion
         </h2>
         <p className="text-muted-foreground text-center mb-6">
-          Based on {weight}kg, {age} year{age !== 1 ? "s" : ""} old, for {getGoalText()}
+          Based on {weight} lbs, {age} year{age !== 1 ? "s" : ""} old, for {getGoalText()}
         </p>
 
         {/* Unit Toggle */}
