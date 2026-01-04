@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Cat, Dog } from "lucide-react";
+import catImage from "@/assets/kibbly-cat.png";
+import dogImage from "@/assets/kibbly-dog.png";
 
 type PetType = "cat" | "dog";
 
@@ -35,8 +36,8 @@ const PetSelector = ({ onSelect }: PetSelectorProps) => {
           className="flex-1 bg-card rounded-2xl p-8 shadow-card hover:shadow-button-hover transition-shadow duration-300 border border-border group"
         >
           <div className="flex flex-col items-center gap-4">
-            <div className="w-24 h-24 rounded-full bg-accent flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300">
-              <Cat className="w-12 h-12 text-primary" strokeWidth={1.5} />
+            <div className="w-24 h-24 flex items-center justify-center">
+              <img src={catImage} alt="Cat" className="w-20 h-20 object-contain" />
             </div>
             <span className="text-xl font-semibold text-foreground">Cat</span>
           </div>
@@ -52,8 +53,8 @@ const PetSelector = ({ onSelect }: PetSelectorProps) => {
           className="flex-1 bg-card rounded-2xl p-8 shadow-card hover:shadow-button-hover transition-shadow duration-300 border border-border group"
         >
           <div className="flex flex-col items-center gap-4">
-            <div className="w-24 h-24 rounded-full bg-accent flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300">
-              <Dog className="w-12 h-12 text-primary" strokeWidth={1.5} />
+            <div className="w-24 h-24 flex items-center justify-center">
+              <img src={dogImage} alt="Dog" className="w-20 h-20 object-contain" />
             </div>
             <span className="text-xl font-semibold text-foreground">Dog</span>
           </div>
