@@ -96,17 +96,17 @@ const PetDetailsForm = ({ petType, onBack, onSubmit }: PetDetailsFormProps) => {
         {/* Weight Input */}
         <div className="space-y-2">
           <label htmlFor="weight" className="text-sm font-medium text-foreground">
-            Weight (kg)
+            Weight (lbs)
           </label>
           <input
             id="weight"
             type="number"
             min="0"
-            max="100"
+            max="220"
             step="0.1"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            placeholder={petType === "cat" ? "e.g., 4.5" : "e.g., 25"}
+            placeholder={petType === "cat" ? "e.g., 10" : "e.g., 55"}
             className="w-full px-4 py-3 bg-card border border-input rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
           />
         </div>
