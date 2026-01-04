@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Cat, Dog, Utensils, Info } from "lucide-react";
+import UnitToggle from "./UnitToggle";
 
 type PetType = "cat" | "dog";
 type Gender = "male" | "female";
+type Unit = "g" | "oz";
 
 interface PetDetails {
   petType: PetType;
@@ -20,6 +23,7 @@ interface PortionResultProps {
 
 const PortionResult = ({ details, onBack, onReset }: PortionResultProps) => {
   const { petType, age, weight, gender, weightGoal } = details;
+  const [unit, setUnit] = useState<Unit>("g");
   
   // Calculate recommended portion (simplified formula)
   const calculatePortion = () => {
@@ -71,6 +75,12 @@ const PortionResult = ({ details, onBack, onReset }: PortionResultProps) => {
     return "maintenance";
   };
 
+  // Convert grams to ounces (1g = 0.035274 oz)
+  const gramsToOz = (g: number) => (g * 0.035274).toFixed(1);
+  
+  const displayAmount = unit === "g" ? portion.grams : gramsToOz(portion.grams);
+  const displayPerMeal = unit === "g" ? Math.round(portion.grams / 2) : gramsToOz(portion.grams / 2);
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -102,9 +112,14 @@ const PortionResult = ({ details, onBack, onReset }: PortionResultProps) => {
         <h2 className="text-xl font-bold text-foreground text-center mb-2">
           Your {petName}'s daily portion
         </h2>
-        <p className="text-muted-foreground text-center mb-8">
+        <p className="text-muted-foreground text-center mb-6">
           Based on {weight}kg, {age} year{age !== 1 ? "s" : ""} old, for {getGoalText()}
         </p>
+
+        {/* Unit Toggle */}
+        <div className="flex justify-center mb-6">
+          <UnitToggle value={unit} onChange={setUnit} />
+        </div>
 
         {/* Main Result */}
         <motion.div
@@ -117,9 +132,14 @@ const PortionResult = ({ details, onBack, onReset }: PortionResultProps) => {
             <Utensils className="w-6 h-6 text-primary-foreground/80" />
             <span className="text-primary-foreground/80 font-medium">Daily Amount</span>
           </div>
-          <div className="text-5xl font-bold text-primary-foreground mb-1">
-            {portion.grams}g
-          </div>
+          <motion.div 
+            key={`${displayAmount}-${unit}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl font-bold text-primary-foreground mb-1"
+          >
+            {displayAmount}{unit}
+          </motion.div>
           <div className="text-primary-foreground/70 text-sm">
             or about {portion.cups} cups of dry food
           </div>
@@ -132,7 +152,14 @@ const PortionResult = ({ details, onBack, onReset }: PortionResultProps) => {
             <div className="text-sm text-muted-foreground">kcal/day</div>
           </div>
           <div className="bg-accent/50 rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-foreground">{Math.round(portion.grams / 2)}g</div>
+            <motion.div 
+              key={`${displayPerMeal}-${unit}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-2xl font-bold text-foreground"
+            >
+              {displayPerMeal}{unit}
+            </motion.div>
             <div className="text-sm text-muted-foreground">per meal (2x)</div>
           </div>
         </div>
